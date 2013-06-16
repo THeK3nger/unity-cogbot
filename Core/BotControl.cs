@@ -12,15 +12,13 @@ using System.Collections.Generic;
  * \version 1.0
  * \date 2013
  */
-public class BotControl : GridWorldBehaviour
+public class BotControl : MonoBehaviour
 {
 
 	// CONTROL INSPECTOR PARAMETERS
 	public float thinkTick = 1;				//Time interval between a think cicle.
 	public string deliberatorName;			//Name of the IBotDeliberator implementation.
 
-	private char[] myMap;					//Store local map perception.
-	private int rsize, csize;				//Map size.
 	private BotActions botActions;  		//Reference to the BotAction component.
 	private IBotDeliberator deliberator;	//Reference to a IBotDeliberator interface.
     private bool deliberatorOn;				//True if deliberator is ON.
@@ -31,38 +29,34 @@ public class BotControl : GridWorldBehaviour
 	private enum Status { IDLE, EXECUTING };
 	private Status controlStatus;			// Controller Status.
 
-    public StateBook internalKnowledge;
+    //public StateBook internalKnowledge;
 
 	// Use this for initialization
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
-        internalKnowledge = gameObject.GetComponent<StateBook>();
+        //internalKnowledge = gameObject.GetComponent<StateBook>();
         controlStatus = Status.IDLE;
-        int[] sizes = mapWorld.GetMapSize();
-        rsize = sizes[0];
-        csize = sizes[1];
-        myMap = new char[rsize * csize];
+        //int[] sizes = mapWorld.GetMapSize();
+        //rsize = sizes[0];
+        //csize = sizes[1];
+        //myMap = new char[rsize * csize];
         // Initialize to " " space.
-        for (int i = 0; i < rsize; i++)
-        {
-            for (int j = 0; j < csize; j++)
-            {
-                myMap[i * csize + j] = ' ';
-            }
-        }
+        //for (int i = 0; i < rsize; i++)
+        //{
+        //    for (int j = 0; j < csize; j++)
+        //    {
+        //        myMap[i * csize + j] = ' ';
+        //    }
+        //}
         // --
         objectInFov = new List<GameObject>();
         botActions = gameObject.GetComponent<BotActions>();
         deliberator = gameObject.GetComponent(deliberatorName) as IBotDeliberator;
         // Disable deliberator if deliberator exist or manual control is enabled.
-        ManualControl mc = gameObject.GetComponent<ManualControl>();
-        deliberatorOn = (deliberator != null) &&
-            ((mc == null) ||
-            !gameObject.GetComponent<ManualControl>().enabled);
+        deliberatorOn = true;
         // Update current position in myMap
-        Vector3 current = gameObject.transform.position;
-        int[] idxs = mapWorld.GetIndexesFromWorld(current.x, current.z);
+        //Vector3 current = gameObject.transform.position;
+        //int[] idxs = mapWorld.GetIndexesFromWorld(current.x, current.z);
         //mapWorld.CopyRegion(myMap, idxs[0] - 1, idxs[1] - 1, 3, 3);
         // Run Thread Function Every `n` second
         InvokeRepeating("ThinkLoop", 0, thinkTick);
@@ -78,9 +72,9 @@ public class BotControl : GridWorldBehaviour
 	 	// Extract Type and update the map.
 		SmartObjects attributes = obj.GetComponent<SmartObjects> ();
 		char type = attributes.type[0];
-		int idx = mapWorld.GetArrayIndex (obj.transform.position.x, obj.transform.position.z);
+		//int idx = mapWorld.GetArrayIndex (obj.transform.position.x, obj.transform.position.z);
 		objectInFov.Add (obj);
-		myMap [idx] = type;
+		//myMap [idx] = type;
         attributes.AddObserver(this);
         // Update deliberator state for the object.
         NotifyObjectChange(obj, type);
@@ -135,7 +129,6 @@ public class BotControl : GridWorldBehaviour
 	// TODO: ThinkLoop 
 	public void ThinkLoop() {
 		if (controlStatus == Status.IDLE && deliberatorOn) {
-            printMap();
 			string nextaction = deliberator.GetNextAction();
 			Debug.Log("NEXT ACTION: " + nextaction);
             if (nextaction != "")
@@ -179,25 +172,6 @@ public class BotControl : GridWorldBehaviour
         {
             deliberator.NotifyObjectChange(obj, type);
         }
-    }
-
-	/**
-	 * An auxiliary function to print the local map in the Debug.Log
-	 */
-	public void printMap() {
-		string res = "MAP\n";
-		for (int i=0;i<rsize;i++) {
-			for (int j=0;j<csize;j++) {
-                res += myMap[i * csize + j].ToString() +" ";
-			}
-			res += "\n";
-		}
-		Debug.Log(res);
-	}
-
-    public char[] GetInternalMap()
-    {
-        return myMap; // TODO: Check if is better (and efficient) to return a copy
     }
 
 }
