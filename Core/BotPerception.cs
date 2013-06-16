@@ -33,7 +33,7 @@ public class BotPerception : MonoBehaviour
 	{
 		// Extract the controller component from the parent object.
 		parentControl = gameObject.transform.parent.gameObject.GetComponent<BotControl> ();
-		objectInMesh = new List<GameObject>();
+		objectInMesh = new List<GameObject> ();
 	}
 	
 	// Update is called once per frame
@@ -59,6 +59,10 @@ public class BotPerception : MonoBehaviour
 			}
 			return;
 		}
+		SmartObjects so = obj.GetComponent<SmartObjects> ();
+		if (so != null) {
+			so.AddObserver (this);	
+		}
 		// Add to the object list.
 		objectInMesh.Add (obj);
 		// Notify ingress to the controller.
@@ -74,10 +78,28 @@ public class BotPerception : MonoBehaviour
 	void OnTriggerExit (Collider other)
 	{
 		GameObject obj = other.gameObject;
+		SmartObjects so = obj.GetComponent<SmartObjects> ();
+		if (so != null) {
+			so.RemoveObserver (this);	
+		}
 		// Add to the object list.
 		objectInMesh.Remove (obj);
 		// Notify ingress to the controller.
 		parentControl.objectLeavingFOV (obj);
+	}
+	
+	/// <summary>
+	/// Notifies the object change.
+	/// </summary>
+	/// <param name='go'>
+	/// The changing game object.
+	/// </param>
+	/// <param name='type'>
+	/// The object type.
+	/// </param>
+	public void NotifyObjectChange (GameObject go, char type)
+	{
+		parentControl.NotifyObjectChange(go,type);
 	}
 
 	/// <summary>

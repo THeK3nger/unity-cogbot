@@ -75,7 +75,6 @@ public class BotControl : MonoBehaviour
 		//int idx = mapWorld.GetArrayIndex (obj.transform.position.x, obj.transform.position.z);
 		objectInFov.Add (obj);
 		//myMap [idx] = type;
-        attributes.AddObserver(this);
         // Update deliberator state for the object.
         NotifyObjectChange(obj, type);
 	}
@@ -87,8 +86,6 @@ public class BotControl : MonoBehaviour
 	 * \param obj The leaving GameObject.
 	 */
 	public void objectLeavingFOV(GameObject obj) {
-        SmartObjects attributes = obj.GetComponent<SmartObjects>();
-        attributes.RemoveObserver(this);
 		objectInFov.Remove (obj);
 	}
 

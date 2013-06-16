@@ -1,16 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-/**
- * A public interface for the bot higher level.
- * 
- * IBotDeliberator offers a communication interface between BotControl
- * and the higher decisional level.
- *
- * \author Davide Aversa
- * \version 1.0
- * \date 2013
- */
 /// <summary>
 /// A public interface for the bot higher level.
 /// </summary>

@@ -2,52 +2,67 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// A Smart Object component is used to handle stateful objects in the BotPerception
+/// component.
+/// </summary>
+/// \author Davide Aversa
+/// \version 2.0
+/// \date 2013
 public class SmartObjects : MonoBehaviour {
-
+	
+	/// <summary>
+	/// The object type.
+	/// </summary>
+	/// Deprecated.
 	public string type = " ";
+	
+	/// <summary>
+	/// Check if the object is static or not.
+	/// </summary>
+	/// Deprecate.
 	public bool isStatic = true;
-
-    private List<BotControl> observers;
+	
+	/// <summary>
+	/// The list of observers.
+	/// </summary>
+    private List<BotPerception> observers;
 
 	// Use this for initialization
 	void Awake () {
-        observers = new List<BotControl>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+        observers = new List<BotPerception>();
 	}
 
-    /**
-     * Add an observer to the object.
-     * 
-     * \param obs The observer controller.
-     */
-    public void AddObserver(BotControl obs)
+	/// <summary>
+	/// Add an observer to the object.
+	/// </summary>
+	/// <param name='obs'>
+	/// The observer perception component.
+	/// </param>
+    public void AddObserver(BotPerception obs)
     {
         observers.Add(obs);
     }
 
-    /**
-     * Remove an observer.
-     * 
-     * \param obs The observer controller
-     */
-    public void RemoveObserver(BotControl obs)
+	/// <summary>
+	/// Remove an observer from the object.
+	/// </summary>
+	/// <param name='obs'>
+	/// The observer perception component.
+	/// </param>
+    public void RemoveObserver(BotPerception obs)
     {
         observers.Remove(obs);
     }
 
-    /**
-     * Notify a change in the object status that has to be sent to the
-     * observers.
-     */
+	/// <summary>
+	/// Notifies the state change.
+	/// </summary>
     public void NotifyStateChange()
     {
-        foreach (BotControl bc in observers)
+        foreach (BotPerception bp in observers)
         {
-            bc.NotifyObjectChange(gameObject, type[0]);
+            bp.NotifyObjectChange(gameObject, type[0]);
         }
     }
 }
