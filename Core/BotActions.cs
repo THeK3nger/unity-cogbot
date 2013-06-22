@@ -131,9 +131,10 @@ public class BotActions : MonoBehaviour
 	/// <summary>
 	/// Notify to BotAction that the action is complete.
 	/// </summary>
-	public void NotifyActionComplete ()
+	public void NotifyActionComplete (string action)
 	{
 		actionComplete = true;
+		NotifyAction(action);
 	}
 
 	/// <summary>
@@ -150,7 +151,7 @@ public class BotActions : MonoBehaviour
 	/// <param name='action'>
 	/// The name of action succesfully completed.
 	/// </param>(
-	public void NotifyAction (string action)
+	private void NotifyAction (string action)
 	{
 		parentControl.NotifyAction (action);
 	}

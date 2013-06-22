@@ -19,6 +19,8 @@ public class BotPerception : MonoBehaviour
 	/// </summary>
 	public bool raycastTest = true;
 	
+	public string interestType;
+	
 	/// <summary>
 	/// A reference to the IBotControl instance attache to the bot.
 	/// </summary>(
@@ -52,12 +54,14 @@ public class BotPerception : MonoBehaviour
 	void OnTriggerEnter (Collider other)
 	{
 		GameObject obj = other.gameObject;	// Reference to the entering object.
+		if (interestType != "" && obj.tag != interestType) return;
 		if (raycastTest) {
 			GameObject bot = gameObject.transform.parent.gameObject; // Reference to the bot object.
 			if (RayCastVisibility (obj, bot)) {
 				parentControl.objectEnteringFOV (obj);
+			} else {
+				return;
 			}
-			return;
 		}
 		SmartObjects so = obj.GetComponent<SmartObjects> ();
 		if (so != null) {
@@ -97,7 +101,7 @@ public class BotPerception : MonoBehaviour
 	/// <param name='type'>
 	/// The object type.
 	/// </param>
-	public void NotifyObjectChange (GameObject go, char type)
+	public void NotifyObjectChange (GameObject go, string type)
 	{
 		parentControl.NotifyObjectChange(go,type);
 	}

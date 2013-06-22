@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -70,8 +71,9 @@ public class BotControl : MonoBehaviour
 	 */
 	public void objectEnteringFOV(GameObject obj) {
 	 	// Extract Type and update the map.
-		SmartObjects attributes = obj.GetComponent<SmartObjects> ();
-		char type = attributes.type[0];
+		//SmartObjects attributes = obj.GetComponent<SmartObjects> ();
+		//char type = attributes.type[0];
+		string type = obj.tag;
 		//int idx = mapWorld.GetArrayIndex (obj.transform.position.x, obj.transform.position.z);
 		objectInFov.Add (obj);
 		//myMap [idx] = type;
@@ -87,6 +89,7 @@ public class BotControl : MonoBehaviour
 	 */
 	public void objectLeavingFOV(GameObject obj) {
 		objectInFov.Remove (obj);
+		NotifyObjectChange(obj, obj.tag, true);
 	}
 
 	/**
@@ -163,11 +166,19 @@ public class BotControl : MonoBehaviour
      * 
      * \param The changing object.
      */
-    public void NotifyObjectChange(GameObject obj, char type)
+    public void NotifyObjectChange(GameObject obj, string type)
     {
-        if (deliberator.interestType.IndexOf(type) != -1)
+        if (System.Array.IndexOf(deliberator.interestType,type) != -1)
         {
             deliberator.NotifyObjectChange(obj, type);
+        }
+    }
+	
+	public void NotifyObjectChange(GameObject obj, string type, bool isLeaving)
+    {
+        if (System.Array.IndexOf(deliberator.interestType,type) != -1)
+        {
+            deliberator.NotifyObjectChange(obj, type, isLeaving);
         }
     }
 

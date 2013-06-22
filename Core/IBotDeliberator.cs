@@ -34,7 +34,10 @@ public interface IBotDeliberator {
 	/// <param name='type'>
 	/// The object type.
 	/// </param>
-    void NotifyObjectChange(GameObject obj, char type);
+	/// <param name='isLeaving'>
+	/// Set this to true if the notification comes from a leaving object.
+	/// </param>	
+	void NotifyObjectChange(GameObject obj, string type, bool isLeaving = false);
 
 	/// <summary>
 	/// List of the interesting object types for the deliberator.
@@ -42,6 +45,6 @@ public interface IBotDeliberator {
 	/// <value>
 	/// The type of the interest for the deliberator.
 	/// </value>
-    string interestType { get; }
+    string[] interestType { get; }
 
 }

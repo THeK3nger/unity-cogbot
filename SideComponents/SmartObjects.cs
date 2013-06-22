@@ -10,19 +10,7 @@ using System.Collections.Generic;
 /// \version 2.0
 /// \date 2013
 public class SmartObjects : MonoBehaviour {
-	
-	/// <summary>
-	/// The object type.
-	/// </summary>
-	/// Deprecated.
-	public string type = " ";
-	
-	/// <summary>
-	/// Check if the object is static or not.
-	/// </summary>
-	/// Deprecate.
-	public bool isStatic = true;
-	
+		
 	/// <summary>
 	/// The list of observers.
 	/// </summary>
@@ -62,7 +50,7 @@ public class SmartObjects : MonoBehaviour {
     {
         foreach (BotPerception bp in observers)
         {
-            bp.NotifyObjectChange(gameObject, type[0]);
+            bp.NotifyObjectChange(gameObject, gameObject.tag);
         }
     }
 }
