@@ -37,7 +37,7 @@ public interface IBotDeliberator {
 	/// <param name='isLeaving'>
 	/// Set this to true if the notification comes from a leaving object.
 	/// </param>	
-	void NotifyObjectChange(GameObject obj, string type, bool isLeaving = false);
+	void NotifyObjectChange(GameObject obj, bool isLeaving = false);
 
 	/// <summary>
 	/// List of the interesting object types for the deliberator.

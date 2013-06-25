@@ -68,7 +68,7 @@ public class BotPerception : MonoBehaviour
 		// Add to the object list.
 		objectInMesh.Add (obj);
 		// Notify ingress to the controller.
-		parentControl.NotifyObjectChange(obj,obj.tag);
+		parentControl.NotifyObjectChange(obj);
 	}
 
 	/// <summary>
@@ -87,7 +87,7 @@ public class BotPerception : MonoBehaviour
 		// Add to the object list.
 		objectInMesh.Remove (obj);
 		// Notify ingress to the controller.
-		parentControl.NotifyObjectChange(obj,obj.tag,true);
+		parentControl.NotifyObjectChange(obj,true);
 	}
 	
 	/// <summary>
@@ -101,7 +101,7 @@ public class BotPerception : MonoBehaviour
 	/// </param>
 	public void NotifyObjectChange (GameObject go, string type)
 	{
-		parentControl.NotifyObjectChange(go,type);
+		parentControl.NotifyObjectChange(go);
 	}
 
 	/// <summary>

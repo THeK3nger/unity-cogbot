@@ -137,19 +137,19 @@ public class BotControl : MonoBehaviour
      * 
      * \param The changing object.
      */
-    public void NotifyObjectChange(GameObject obj, string type)
+    public void NotifyObjectChange(GameObject obj)
     {
-        if (System.Array.IndexOf(deliberator.interestType,type) != -1)
+        if (System.Array.IndexOf(deliberator.interestType,obj.tag) != -1)
         {
-            deliberator.NotifyObjectChange(obj, type);
+            deliberator.NotifyObjectChange(obj);
         }
     }
 	
-	public void NotifyObjectChange(GameObject obj, string type, bool isLeaving)
+	public void NotifyObjectChange(GameObject obj, bool isLeaving)
     {
-        if (System.Array.IndexOf(deliberator.interestType,type) != -1)
+        if (System.Array.IndexOf(deliberator.interestType,obj.tag) != -1)
         {
-            deliberator.NotifyObjectChange(obj, type, isLeaving);
+            deliberator.NotifyObjectChange(obj, isLeaving);
         }
     }
 
