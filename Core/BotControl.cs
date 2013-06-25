@@ -64,35 +64,6 @@ public class BotControl : MonoBehaviour
     }
 
 	/**
-	 * Callback function called by the Perception component
-	 * when an object enter in the collision FOV object.
-	 * 
-	 * \param obj The entering GameObject.
-	 */
-	public void objectEnteringFOV(GameObject obj) {
-	 	// Extract Type and update the map.
-		//SmartObjects attributes = obj.GetComponent<SmartObjects> ();
-		//char type = attributes.type[0];
-		string type = obj.tag;
-		//int idx = mapWorld.GetArrayIndex (obj.transform.position.x, obj.transform.position.z);
-		objectInFov.Add (obj);
-		//myMap [idx] = type;
-        // Update deliberator state for the object.
-        NotifyObjectChange(obj, type);
-	}
-
-	/**
-	 * Callback function called by the Perception component
-	 * when an object leaves the collision FOV object.
-	 * 
-	 * \param obj The leaving GameObject.
-	 */
-	public void objectLeavingFOV(GameObject obj) {
-		objectInFov.Remove (obj);
-		NotifyObjectChange(obj, obj.tag, true);
-	}
-
-	/**
 	 * CheckCondition parse a condition formula and return a single boolean value.
 	 *
 	 * TODO: Define formula syntax.

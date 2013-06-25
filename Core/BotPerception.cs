@@ -57,9 +57,7 @@ public class BotPerception : MonoBehaviour
 		if (interestType != "" && obj.tag != interestType) return;
 		if (raycastTest) {
 			GameObject bot = gameObject.transform.parent.gameObject; // Reference to the bot object.
-			if (RayCastVisibility (obj, bot)) {
-				parentControl.objectEnteringFOV (obj);
-			} else {
+			if (!RayCastVisibility (obj, bot)) {
 				return;
 			}
 		}
@@ -70,7 +68,7 @@ public class BotPerception : MonoBehaviour
 		// Add to the object list.
 		objectInMesh.Add (obj);
 		// Notify ingress to the controller.
-		parentControl.objectEnteringFOV (obj);
+		parentControl.NotifyObjectChange(obj,obj.tag);
 	}
 
 	/// <summary>
@@ -89,7 +87,7 @@ public class BotPerception : MonoBehaviour
 		// Add to the object list.
 		objectInMesh.Remove (obj);
 		// Notify ingress to the controller.
-		parentControl.objectLeavingFOV (obj);
+		parentControl.NotifyObjectChange(obj,obj.tag,true);
 	}
 	
 	/// <summary>
