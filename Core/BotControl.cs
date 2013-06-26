@@ -17,12 +17,12 @@ public class BotControl : MonoBehaviour
 {
 
 	// CONTROL INSPECTOR PARAMETERS
+	public bool onDemand = false;			//If true the think loop must be executed on demand.
 	public float thinkTick = 1;				//Time interval between a think cicle.
 	public string deliberatorName;			//Name of the IBotDeliberator implementation.
 
 	private BotActions botActions;  		//Reference to the BotAction component.
 	private IBotDeliberator deliberator;	//Reference to a IBotDeliberator interface.
-    private bool deliberatorOn;				//True if deliberator is ON.
 	
 	private List<GameObject> objectInFov; 	// Contains the list of object in the FOV.
 
@@ -35,32 +35,14 @@ public class BotControl : MonoBehaviour
 	// Use this for initialization
     protected void Awake()
     {
-        //internalKnowledge = gameObject.GetComponent<StateBook>();
         controlStatus = Status.IDLE;
-        //int[] sizes = mapWorld.GetMapSize();
-        //rsize = sizes[0];
-        //csize = sizes[1];
-        //myMap = new char[rsize * csize];
-        // Initialize to " " space.
-        //for (int i = 0; i < rsize; i++)
-        //{
-        //    for (int j = 0; j < csize; j++)
-        //    {
-        //        myMap[i * csize + j] = ' ';
-        //    }
-        //}
-        // --
         objectInFov = new List<GameObject>();
         botActions = gameObject.GetComponent<BotActions>();
         deliberator = gameObject.GetComponent(deliberatorName) as IBotDeliberator;
-        // Disable deliberator if deliberator exist or manual control is enabled.
-        deliberatorOn = true;
-        // Update current position in myMap
-        //Vector3 current = gameObject.transform.position;
-        //int[] idxs = mapWorld.GetIndexesFromWorld(current.x, current.z);
-        //mapWorld.CopyRegion(myMap, idxs[0] - 1, idxs[1] - 1, 3, 3);
         // Run Thread Function Every `n` second
-        InvokeRepeating("ThinkLoop", 0, thinkTick);
+		if (!onDemand) {
+        	InvokeRepeating("ThinkLoop", 0, thinkTick);
+		}
     }
 
 	/**
@@ -99,7 +81,7 @@ public class BotControl : MonoBehaviour
 
 	// TODO: ThinkLoop 
 	public void ThinkLoop() {
-		if (controlStatus == Status.IDLE && deliberatorOn) {
+		if (controlStatus == Status.IDLE) {
 			string nextaction = deliberator.GetNextAction();
 			Debug.Log("NEXT ACTION: " + nextaction);
             if (nextaction != "")
